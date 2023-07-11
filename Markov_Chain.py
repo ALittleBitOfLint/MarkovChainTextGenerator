@@ -20,18 +20,18 @@ def test1():
     print("Correct symbol/word count: ", end="")
     print(passFail(len(wordList) == 21))
     print()
-    print("Correct pasing of words: ")
+    print("Correct parsing of words: ")
     print("Parses conjugates: ", passFail("don't" in wordList))
     print("Parses honorifics: ", passFail("mr.bond" in wordList))   # checking for titles
-    print("Parses ellipse: ", passFail("..." in wordList))       # checking for elipse
-    print("Parses possesive apostrophes: ", passFail("general’s" in wordList)) # using an actual apostrphe
+    print("Parses ellipse: ", passFail("..." in wordList))       # checking for ellipse
+    print("Parses possessive apostrophes: ", passFail("general’s" in wordList)) # using an actual apostrophe
     print("Parses ending punctuation: ", passFail("?" in wordList))         # checking for ending punctuation
     print()
 
 #LOOK HERE TO TEST
 def test2():
     # checks for correct markov matrix generation
-    markovMatrix = createMarkovArray(testfilePath + "genMarkovTests.txt")
+    markovMatrix = CreateMarkovArray(testfilePath + "genMarkovTests.txt")
     print("Test 2 - Markov generation tests")
     print("--------------------------------")
     print("All starter words are correct:")
@@ -54,10 +54,10 @@ def test2():
 def test3():
 
     # a smaller test checking for correct traversal of the markov matrix
-    markovMatrix = createMarkovArray(testfilePath + "sentenceGenTests.txt")
+    markovMatrix = CreateMarkovArray(testfilePath + "sentenceGenTests.txt")
     sentences = []
     # gen all the sentences possible
-    # this should never take long due to the low possiblities of sentences
+    # this should never take long due to the low possibilities of sentences
     while len(sentences) != 4:
         newSentence = getRandSentence(markovMatrix)
         if not newSentence in sentences:
@@ -75,7 +75,7 @@ def test3():
 #LOOK HERE TO TEST
 def test4():
     # test that you can combine files into the markov matrix
-    markovMatrix = createMarkovArray(testfilePath + "combineTest1.txt")
+    markovMatrix = CreateMarkovArray(testfilePath + "combineTest1.txt")
     markovMatrix = AddFileToMarkovArray(testfilePath + "combineTest2.txt", markovMatrix)
 
     print("Test 4 - Add files tests")
@@ -101,7 +101,7 @@ def runTimeTest():
     for fileName in os.listdir(cwd + "/testFiles/timeFiles"):
         print("Timings for file: ", fileName)
         start = time.time()
-        markovArray = createMarkovArray(timeFilePath+fileName)
+        markovArray = CreateMarkovArray(timeFilePath+fileName)
         end = time.time()
         print("Creating the markov array: ", end-start)
         start = time.time()
@@ -126,7 +126,7 @@ def getNextWord(word, markovMatrix):
         print("sorry something went wrong")
         return "."
 
-def createMarkovArray(fileName):
+def CreateMarkovArray(fileName):
     wordList = []
 
     # init the dictionary
@@ -143,7 +143,7 @@ def createMarkovArray(fileName):
     startWords[sumKey] += 1
 
     # for each word in the word list
-    for i  in range(0,len(wordList)):
+    for i in range(0,len(wordList)):
         curWord = wordList[i]
         # if it not the last word get the next word
         if i + 1 < len(wordList):
@@ -239,7 +239,7 @@ def getRandSentence(markovMatrix):
         else:
             sentence += nextWord
 
-    return sentence
+    return sentence.capitalize()
 
 def genRandomSentences(markovMatrix):
     choice = input("press enter to generate a random sentence or enter q to quit: ")
@@ -295,20 +295,20 @@ def main(argv):
         if choice == '1':
             print("Creating markov chain...")
             print()
-            firstFile = True;
+            firstFile = True
             for fileName in os.listdir(inputDir):
                 if firstFile:
-                    markovMatrix = createMarkovArray(inputPath+fileName)
+                    markovMatrix = CreateMarkovArray(inputPath+fileName)
                     firstFile = False
                 else:
                     markovMatrix = AddFileToMarkovArray(inputPath+fileName, markovMatrix)
 
             genRandomSentences(markovMatrix)
-        if choice == '2':``
+        elif choice == '2':
             runTest()
-        if choice == '3':
+        elif choice == '3':
             runTimeTest()
-        if choice == 'q':
+        elif choice == 'q':
             return
         else:
             print("invalid input!")
